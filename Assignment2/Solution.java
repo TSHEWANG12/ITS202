@@ -1,6 +1,6 @@
 import java.util.*;
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.LinkedList;
 
 public class Solution<Key extends Comparable<Key>, Value> {
     private Node root;             // root of BST
@@ -11,7 +11,7 @@ public class Solution<Key extends Comparable<Key>, Value> {
         private Node left, right;  // left and right subtrees
         private int size;          // number of nodes in subtree
 
-        public Node(Key key, Value val, int size) {
+        public Node(Key key, Value val,int size) {
             this.key = key;
             this.val = val;
             this.size = size;
@@ -22,7 +22,6 @@ public class Solution<Key extends Comparable<Key>, Value> {
      * Initializes an empty symbol table.
      */
     public Solution() {
-        
     }
 
     /**
@@ -30,7 +29,8 @@ public class Solution<Key extends Comparable<Key>, Value> {
      * @return {@code true} if this symbol table is empty; {@code false} otherwise
      */
     public boolean isEmpty() {
-        return size()==0;
+        return size() == 0;
+       
     }
 
     /**
@@ -38,14 +38,14 @@ public class Solution<Key extends Comparable<Key>, Value> {
      * @return the number of key-value pairs in this symbol table
      */
     public int size() {
-      
-       return size(root);
+      return size(root);
+       
     }
 
     // return number of key-value pairs in BST rooted at x
     private int size(Node x) {
-        if(x==null) return 0;
-        else return x,size;
+        if (x == null) return 0;
+		else return x.size;
        
     }
 
@@ -70,16 +70,16 @@ public class Solution<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public Value get(Key key) {
-        return get(root,key);
+        return get(root, key);
     }
 
     private Value get(Node x, Key key) {
        
-        if(x==null) return null;
-        int cmp=key.compareTo(x.key);
-        if (cmp<0)return get(x.left,key);
-        else if(cmp>0) return get(x.left,key);
-        else return x.val;
+        if (x == null) return null;
+		int cmp = key.compareTo(x.key);
+		if      (cmp < 0) return get(x.left, key);
+		else if (cmp > 0) return get(x.right, key);
+		else              return x.val;
         
     }
 
@@ -94,10 +94,10 @@ public class Solution<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public void put(Key key, Value val) {
-        if(val ==null){delete(key);return;}
-        root=put(root,key val);
-        assert check();
-       
+        if (val == null) { delete(key); return; }
+		root = put(root, key, val);
+		assert check();
+	
     }
 
     // private Node put(Node x, Key key, Value val) {
@@ -111,13 +111,13 @@ public class Solution<Key extends Comparable<Key>, Value> {
      * @throws NoSuchElementException if the symbol table is empty
      */
     public Key min() {
-       if (isEmpty())return null;
-       return  min(root).key;
+       if (isEmpty()) return null;
+		return min(root).key;
     } 
 
     private Node min(Node x) { 
-         if(x.left==null) return x;
-         else return min(x.left);
+         if (x.left == null) return x; 
+		else                return min(x.left);
     } 
 
    
@@ -131,9 +131,9 @@ public class Solution<Key extends Comparable<Key>, Value> {
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
     public Key floor(Key key) {
-        Node x == floor(root,key);
-        if(x==null) return null;
-        else return x.key;
+        Node x = floor(root, key);
+		if (x == null) return null;
+		else return x.key;
     } 
 
     // private Node floor(Node x, Key key) {
@@ -154,18 +154,18 @@ public class Solution<Key extends Comparable<Key>, Value> {
      *        <em>n</em>–1
      */
     public Key select(int k) {
-        if(k<0||k>=size())return null;
-        Node x =select(root,k);
-        return x.key;
+        if (k < 0 || k >= size())  return null;
+		Node x = select(root, k);
+		return x.key;
     }
 
     // Return key of rank k. 
     private Node select(Node x, int k) {
-        if(x==null) return null;
-        int t =size(x.left);
-        if (t>k) return select(x.left,k);
-        else if(t<k) return select(x.right,k-t-1);
-        else    return x;
+        if (x == null) return null; 
+		int t = size(x.left); 
+		if      (t > k) return select(x.left,  k); 
+		else if (t < k) return select(x.right, k-t-1); 
+		else            return x; 
          
     } 
 
@@ -183,16 +183,13 @@ public class Solution<Key extends Comparable<Key>, Value> {
      *         is {@code null}
      */
     public Iterable<Key> keys(Key lo, Key hi) {
-        return key(min(),max());
+     	return keys(min(), max());
     } 
 
     private void keys(Node x,Queue<Key> queue, Key lo, Key hi) { 
-        if (x == null) return; 
-		int cmplo = lo.compareTo(x.key); 
-		int cmphi = hi.compareTo(x.key); 
-		if (cmplo < 0) keys(x.left, queue, lo, hi); 
-		if (cmplo <= 0 && cmphi >= 0) queue.add(x.key); 
-		if (cmphi > 0) keys(x.right, queue, lo, hi); 
+        Queue<Key> queue = new LinkedList<Key>();
+		keys(root, queue, lo, hi);
+		return queue;
     } 
 
    
@@ -201,20 +198,12 @@ public class Solution<Key extends Comparable<Key>, Value> {
     exactly like the file output.txt shows it to be.*/
   
     public static void main(String[] args) { 
-        Solution<String, Integer> st = new Solution<String, Integer>();
-
-		Scanner scan = new Scanner(System.in);
-		int i = 0;
-
-		while (scan.hasNext()) {
-			String key = scan.next();
-			st.put(key, i);
-			i++;
-		}
-
-		for (String s : st.keys())
-			System.out.println(s + " " + st.get(s));
-        
+        Solution<Integer,String> obj = new Solution<Integer,String>();
+        obj.put(24, "A");
+        obj.put(25, "B");
+        obj.put(42, "C");
+        obj.put(50, "D");
+        obj.put(47, "E");
        
     }
 }

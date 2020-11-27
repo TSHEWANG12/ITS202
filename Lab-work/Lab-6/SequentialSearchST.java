@@ -186,7 +186,7 @@ public class SequentialSearchST<Key, Value> {
         obj.put(25, "B");
         obj.put(42, "C");
         obj.put(50, "D");
-        obj.put(47, "");
+        obj.put(47, "E");
         obj.delete(25);
         assert(obj.size == 4);
         assert(obj.contains(50) == true);
